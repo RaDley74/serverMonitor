@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: server_monitor_bot
+    restart: unless-stopped
+    # Загружаем переменные из вашего .env
+    env_file:
+      - .env
+    # Эти параметры позволяют psutil видеть реальное железо сервера:
+    network_mode: "host"
+    pid: "host"
+    volumes:
+      - "/:/host:ro" # Пробрасываем корень диска в режиме "только чтение"
+    environment:
+      - DISK_PATH=/host # Подсказка для psutil (нужно будет поправить код для диска)
