@@ -8,6 +8,9 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 import dotenv
 import os
 from pathlib import Path
+import socket
+
+
 dotenv.load_dotenv()
 
 
@@ -32,8 +35,9 @@ dp = Dispatcher()
 
 def get_system_status():
     # CPU
+    hostname = socket.gethostname()
     cpu_usage = psutil.cpu_percent(interval=1)
-    
+    hostname = socket.gethostname()
     # RAM
     ram = psutil.virtual_memory()
     ram_used_gb = ram.used / (1024**3)
@@ -54,6 +58,7 @@ def get_system_status():
     uptime = datetime.now() - datetime.fromtimestamp(psutil.boot_time())
     
     return (
+        f"🏷 **Server:** {hostname}\n"
         f"🖥 **CPU Usage:** {cpu_usage}%\n"
         f"🧠 **RAM:** {ram.percent}% ({ram_used_gb:.2f} GB / {ram_total_gb:.2f} GB)\n"
         f"💾 **Disk:** {disk.percent}% ({disk.free // 1024**3} GB free)\n"
